@@ -1,0 +1,290 @@
+╔═══════════════════════════════════════════════════════════════════════╗
+║                    COMMAND REFERENCE CARD                             ║
+║          Real-Time Facial Emotion Detection System                    ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ QUICK START COMMANDS                                                  │
+└───────────────────────────────────────────────────────────────────────┘
+
+# Navigate to project
+cd "c:\Users\saksh\Downloads\Emotion Detection"
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Setup helper (guided setup)
+python setup.py
+
+# Model setup helper
+python setup_model.py
+
+# Run the application
+cd src
+python main.py
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ RUNNING THE APPLICATION                                               │
+└───────────────────────────────────────────────────────────────────────┘
+
+# Basic run (default settings)
+python main.py
+
+# Use different camera
+python main.py --camera 1          # Camera ID 1
+python main.py --camera 2          # Camera ID 2
+
+# Set confidence threshold
+python main.py --confidence 0.7    # 70% confidence minimum
+python main.py --confidence 0.4    # 40% confidence minimum
+
+# Hide FPS counter
+python main.py --no-fps
+
+# Use custom model
+python main.py --model "../models/custom_model.h5"
+
+# Combine multiple options
+python main.py --camera 1 --confidence 0.6 --no-fps
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ KEYBOARD CONTROLS (While Running)                                     │
+└───────────────────────────────────────────────────────────────────────┘
+
+Q  →  Quit application
+S  →  Save screenshot (saves to current directory)
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ TESTING INDIVIDUAL MODULES                                            │
+└───────────────────────────────────────────────────────────────────────┘
+
+cd src
+
+# Test face detection only
+python face_detection.py
+
+# Test preprocessing only
+python emotion_prediction.py
+
+# Test emotion model (requires model file)
+python emotion_model.py
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ INSTALLATION & SETUP                                                  │
+└───────────────────────────────────────────────────────────────────────┘
+
+# Install all dependencies
+pip install -r requirements.txt
+
+# Install specific packages
+pip install opencv-python
+pip install tensorflow
+pip install numpy
+
+# Upgrade packages
+pip install --upgrade -r requirements.txt
+
+# Install with GPU support (if you have CUDA)
+pip install tensorflow-gpu
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ PYTHON VERSION CHECK                                                  │
+└───────────────────────────────────────────────────────────────────────┘
+
+# Check Python version (need 3.8+)
+python --version
+
+# Or
+python -c "import sys; print(sys.version)"
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ VERIFICATION COMMANDS                                                 │
+└───────────────────────────────────────────────────────────────────────┘
+
+# Check if OpenCV is installed
+python -c "import cv2; print(cv2.__version__)"
+
+# Check if TensorFlow is installed
+python -c "import tensorflow as tf; print(tf.__version__)"
+
+# Check if NumPy is installed
+python -c "import numpy as np; print(np.__version__)"
+
+# Check if model file exists
+dir models\emotion_model.h5        # Windows
+ls models/emotion_model.h5         # Linux/Mac
+
+# Check if cascade file exists
+dir cascades\haarcascade_frontalface_default.xml
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ TROUBLESHOOTING COMMANDS                                              │
+└───────────────────────────────────────────────────────────────────────┘
+
+# List available cameras (Windows PowerShell)
+Get-PnpDevice | Where-Object {$_.FriendlyName -like "*camera*"}
+
+# Test camera with OpenCV
+python -c "import cv2; cap = cv2.VideoCapture(0); print('Camera OK' if cap.isOpened() else 'Camera Failed')"
+
+# Reinstall dependencies
+pip uninstall opencv-python tensorflow numpy -y
+pip install -r requirements.txt
+
+# Clear pip cache and reinstall
+pip cache purge
+pip install -r requirements.txt --no-cache-dir
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ GIT COMMANDS (Optional)                                               │
+└───────────────────────────────────────────────────────────────────────┘
+
+# Initialize git repository
+git init
+
+# Add files
+git add .
+
+# Commit
+git commit -m "Initial commit: Emotion Detection System"
+
+# Check status
+git status
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ FILE LOCATIONS                                                        │
+└───────────────────────────────────────────────────────────────────────┘
+
+Source Code:       src/
+Model File:        models/emotion_model.h5  (you need to obtain)
+Haar Cascade:      cascades/haarcascade_frontalface_default.xml
+Documentation:     README.md, QUICKSTART.md, PROJECT_INFO.md
+Dependencies:      requirements.txt
+Setup Scripts:     setup.py, setup_model.py
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ GETTING HELP                                                          │
+└───────────────────────────────────────────────────────────────────────┘
+
+# View README
+notepad README.md              # Windows
+cat README.md                  # Linux/Mac
+
+# View quick start
+notepad QUICKSTART.md
+
+# View project info
+notepad PROJECT_INFO.md
+
+# View this reference
+notepad COMMAND_REFERENCE.txt
+
+# Run setup helper
+python setup.py
+
+# Run model setup helper
+python setup_model.py
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ COMMON WORKFLOW                                                       │
+└───────────────────────────────────────────────────────────────────────┘
+
+1. SETUP (First time only)
+   ────────────────────────────────────────────────────────────────────
+   cd "c:\Users\saksh\Downloads\Emotion Detection"
+   pip install -r requirements.txt
+   python setup_model.py
+   # Follow instructions to get model file
+
+2. RUN
+   ────────────────────────────────────────────────────────────────────
+   cd src
+   python main.py
+
+3. USE
+   ────────────────────────────────────────────────────────────────────
+   - Face the camera
+   - See emotion predictions in real-time
+   - Press 'S' to save screenshots
+   - Press 'Q' to quit
+
+4. CUSTOMIZE
+   ────────────────────────────────────────────────────────────────────
+   python main.py --camera 1 --confidence 0.7
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ PERFORMANCE OPTIMIZATION                                              │
+└───────────────────────────────────────────────────────────────────────┘
+
+# Install GPU version (if you have NVIDIA GPU with CUDA)
+pip install tensorflow-gpu
+
+# Reduce video resolution (edit main.py)
+# Change lines in main.py:
+#   cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)   # Smaller = faster
+#   cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+
+# Use lower confidence threshold
+python main.py --confidence 0.3
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ EXPORTING & SHARING                                                   │
+└───────────────────────────────────────────────────────────────────────┘
+
+# Create requirements with exact versions
+pip freeze > requirements_exact.txt
+
+# Create virtual environment
+python -m venv venv
+venv\Scripts\activate              # Windows
+source venv/bin/activate           # Linux/Mac
+
+# Package for distribution
+# (Exclude .git, venv, and model file to reduce size)
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ ALTERNATIVE PYTHON COMMANDS                                           │
+└───────────────────────────────────────────────────────────────────────┘
+
+If 'python' doesn't work, try:
+  - python3
+  - py
+  - py -3
+
+If 'pip' doesn't work, try:
+  - pip3
+  - python -m pip
+  - py -m pip
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ EMOTION LABELS                                                        │
+└───────────────────────────────────────────────────────────────────────┘
+
+0 - Angry     (Red)
+1 - Disgust   (Green)
+2 - Fear      (Purple)
+3 - Happy     (Yellow)
+4 - Sad       (Blue)
+5 - Surprise  (Orange)
+6 - Neutral   (Gray)
+
+┌───────────────────────────────────────────────────────────────────────┐
+│ QUICK REFERENCE URLs                                                  │
+└───────────────────────────────────────────────────────────────────────┘
+
+FER-2013 Dataset:
+  https://www.kaggle.com/datasets/msambare/fer2013
+
+OpenCV Documentation:
+  https://docs.opencv.org/
+
+TensorFlow Documentation:
+  https://www.tensorflow.org/
+
+Python Documentation:
+  https://docs.python.org/3/
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║ Save this file for quick reference!                                  ║
+║ Print it or keep it open while working with the system.              ║
+╚═══════════════════════════════════════════════════════════════════════╝
