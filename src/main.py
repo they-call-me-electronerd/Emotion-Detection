@@ -48,7 +48,7 @@ class EmotionDetectionSystem:
     
     def __init__(self, model_path: Optional[str] = None, 
                  cascade_path: Optional[str] = None,
-                 confidence_threshold: float = 0.5,
+                 confidence_threshold: float = 0.2,
                  show_fps: bool = True):
         """
         Initialize the emotion detection system.
@@ -89,7 +89,7 @@ class EmotionDetectionSystem:
         self.frame_times = []
         self.max_frame_times = 30  # Track last 30 frames for FPS calculation
     
-    def draw_emotion_info(self, frame, x, y, w, h, emotion, confidence):
+    def draw_emotion_info(self, frame, x, y, w, h, emotion, confidence, color_override=None):
         """
         Draw bounding box and emotion information on frame.
         
@@ -99,8 +99,8 @@ class EmotionDetectionSystem:
             emotion: Predicted emotion
             confidence: Prediction confidence
         """
-        # Get color for this emotion
-        color = self.emotion_detector.get_emotion_color(emotion)
+        # Get color for this emotion (or override for low-confidence display)
+        color = color_override or self.emotion_detector.get_emotion_color(emotion)
         
         # Draw rectangle around face
         cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
@@ -239,14 +239,12 @@ class EmotionDetectionSystem:
                 # Predict emotion
                 emotion, confidence, _ = self.emotion_detector.predict_emotion(preprocessed_face)
                 
-                # Only display if confidence is above threshold
+                # Always display the top prediction.
+                # If confidence is low, draw it in gray so it doesn't look like a confident result.
                 if confidence >= self.confidence_threshold:
                     self.draw_emotion_info(frame, x, y, w, h, emotion, confidence)
                 else:
-                    # Draw gray rectangle for low-confidence detections
-                    cv2.rectangle(frame, (x, y), (x + w, y + h), (128, 128, 128), 2)
-                    cv2.putText(frame, "Low Confidence", (x, y - 10),
-                               cv2.FONT_HERSHEY_SIMPLEX, 0.5, (128, 128, 128), 1)
+                    self.draw_emotion_info(frame, x, y, w, h, emotion, confidence, color_override=(128, 128, 128))
                 
             except Exception as e:
                 print(f"[WARNING] Error processing face: {str(e)}")
@@ -362,8 +360,8 @@ def parse_arguments():
     parser.add_argument(
         '--confidence', '-conf',
         type=float,
-        default=0.5,
-        help='Minimum confidence threshold (0-1, default: 0.5)'
+        default=0.2,
+        help='Minimum confidence threshold (0-1, default: 0.2)'
     )
     
     parser.add_argument(
