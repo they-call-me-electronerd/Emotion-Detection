@@ -18,10 +18,11 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 warnings.filterwarnings('ignore')
 
 try:
-    import tensorflow as tf
-    from tensorflow.keras.models import load_model
+    # Prefer standalone Keras import so static analysis (Pylance) can resolve it reliably.
+    # TensorFlow is still used as the backend via the installed `tensorflow` package.
+    from keras.models import load_model
 except ImportError:
-    print("[ERROR] TensorFlow not installed. Please run: pip install tensorflow")
+    print("[ERROR] Keras/TensorFlow not installed. Please run: pip install -r requirements.txt")
     raise
 
 
