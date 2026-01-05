@@ -34,9 +34,9 @@ class FaceDetector:
             FileNotFoundError: If cascade file is not found
         """
         if cascade_path is None:
-            # Try to use the cascade from the cascades folder
+            # Try to use the cascade from the data/cascades folder
             base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            cascade_path = os.path.join(base_dir, 'cascades', 'haarcascade_frontalface_default.xml')
+            cascade_path = os.path.join(base_dir, 'data', 'cascades', 'haarcascade_frontalface_default.xml')
             
             # If not found, try OpenCV's built-in cascade
             if not os.path.exists(cascade_path):
@@ -45,7 +45,7 @@ class FaceDetector:
         if not os.path.exists(cascade_path):
             raise FileNotFoundError(
                 f"Haar Cascade file not found at: {cascade_path}\n"
-                "Please ensure the haarcascade_frontalface_default.xml file is in the cascades folder."
+                "Please ensure the haarcascade_frontalface_default.xml file is in the data/cascades folder."
             )
         
         self.cascade_path = cascade_path
