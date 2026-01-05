@@ -21,6 +21,7 @@ try:
     # Prefer standalone Keras import so static analysis (Pylance) can resolve it reliably.
     # TensorFlow is still used as the backend via the installed `tensorflow` package.
     from keras.models import load_model
+    from keras import layers, models
 except ImportError:
     print("[ERROR] Keras/TensorFlow not installed. Please run: pip install -r requirements.txt")
     raise
@@ -95,7 +96,7 @@ class EmotionDetector:
         print(f"[INFO] Model path: {model_path}")
         
         try:
-            self.model = load_model(model_path, compile=False)
+            self.model = self._load_model_or_weights(model_path)
             print(f"[SUCCESS] Model loaded successfully")
             
             # Display model information
@@ -103,6 +104,47 @@ class EmotionDetector:
             
         except Exception as e:
             raise ValueError(f"Failed to load model: {str(e)}")
+
+    def _load_model_or_weights(self, model_path: str):
+        """Load a full Keras model, or fall back to loading weights-only .h5 files."""
+        try:
+            return load_model(model_path, compile=False)
+        except Exception as e:
+            message = str(e)
+            # Common when the .h5 contains weights only (created via model.save_weights)
+            if "No model config found" not in message:
+                raise
+
+            print("[WARNING] Model file appears to contain weights only (no architecture).")
+            print("[INFO] Reconstructing default FER-style CNN architecture and loading weights...")
+            model = self._build_default_fer_cnn()
+            model.load_weights(model_path)
+            return model
+
+    @staticmethod
+    def _build_default_fer_cnn():
+        """Build the CNN architecture that matches the bundled weights-only H5 file."""
+        inputs = layers.Input(shape=(48, 48, 1))
+
+        x = layers.Conv2D(32, (3, 3), activation='relu', padding='valid', name='conv2d_1')(inputs)
+        x = layers.Conv2D(64, (3, 3), activation='relu', padding='valid', name='conv2d_2')(x)
+        x = layers.MaxPooling2D((2, 2), name='max_pooling2d_1')(x)
+        x = layers.Dropout(0.25, name='dropout_1')(x)
+
+        x = layers.Conv2D(128, (3, 3), activation='relu', padding='valid', name='conv2d_3')(x)
+        x = layers.Conv2D(128, (3, 3), activation='relu', padding='valid', name='conv2d_4')(x)
+        x = layers.MaxPooling2D((2, 2), name='max_pooling2d_2')(x)
+        x = layers.Dropout(0.25, name='dropout_2')(x)
+
+        # Some common FER models include an additional pooling step before the dense head.
+        x = layers.MaxPooling2D((2, 2), name='max_pooling2d_3')(x)
+
+        x = layers.Flatten(name='flatten_1')(x)
+        x = layers.Dense(1024, activation='relu', name='dense_1')(x)
+        x = layers.Dropout(0.5, name='dropout_3')(x)
+        outputs = layers.Dense(7, activation='softmax', name='dense_2')(x)
+
+        return models.Model(inputs=inputs, outputs=outputs, name='emotion_fer_cnn')
     
     def _display_model_info(self):
         """Display information about the loaded model."""
