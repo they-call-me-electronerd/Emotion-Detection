@@ -404,8 +404,8 @@ def main():
     except FileNotFoundError as e:
         print(f"\n[ERROR] {str(e)}")
         print("\n[HELP] Required files:")
-        print("  1. models/emotion_model.h5 - Pre-trained emotion detection model")
-        print("  2. cascades/haarcascade_frontalface_default.xml - Face detector (optional)")
+        print("  1. data/models/emotion_model.h5 - Pre-trained emotion detection model")
+        print("  2. data/cascades/haarcascade_frontalface_default.xml - Face detector (optional)")
         print("\n[INFO] Please ensure these files are in place and try again.")
         
     except Exception as e:
