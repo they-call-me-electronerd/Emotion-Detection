@@ -76,9 +76,9 @@ class EmotionDetector:
             ValueError: If model fails to load
         """
         if model_path is None:
-            # Default path: models/emotion_model.h5
+            # Default path: data/models/emotion_model.h5
             base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            model_path = os.path.join(base_dir, 'models', 'emotion_model.h5')
+            model_path = os.path.join(base_dir, 'data', 'models', 'emotion_model.h5')
         
         if not os.path.exists(model_path):
             raise FileNotFoundError(
@@ -331,7 +331,7 @@ if __name__ == "__main__":
         print("\n[INFO] To use this emotion detector, you need to:")
         print("  1. Train a CNN model on the FER-2013 dataset, or")
         print("  2. Download a pre-trained model")
-        print("  3. Place the model file as: models/emotion_model.h5")
+        print("  3. Place the model file as: data/models/emotion_model.h5")
         
     except Exception as e:
         print(f"\n[ERROR] {str(e)}")
