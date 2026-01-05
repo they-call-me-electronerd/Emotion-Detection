@@ -582,7 +582,7 @@ SOFTWARE.
 
 ## 👨‍💻 Author
 
-**AI Engineer**  
+**Sakshyam Bastakoti**  
 *Expert in Computer Vision and Deep Learning*
 
 ---
