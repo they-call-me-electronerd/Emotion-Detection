@@ -19,7 +19,6 @@ warnings.filterwarnings('ignore')
 
 try:
     import tensorflow as tf
-    from tensorflow import keras
     from tensorflow.keras.models import load_model
 except ImportError:
     print("[ERROR] TensorFlow not installed. Please run: pip install tensorflow")
